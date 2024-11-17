@@ -17,6 +17,6 @@ class AutoRouteNavigationService implements NavigationService {
 
   @override
   void goBack() {
-    _router.pop();
+    _router.back();
   }
 } 
