@@ -20,7 +20,7 @@ class ProfileEditScreen extends ConsumerWidget {
           TextButton(
             onPressed: () {
               // TODO: Implement save functionality
-              context.router.pop();
+              context.router.back();
             },
             child: const Text('Save'),
           ),
