@@ -15,6 +15,10 @@ class AppRouter extends _$AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(
           path: '/',
+          page: LoginRoute.page,
+        ),
+        AutoRoute(
+          path: '/main',
           page: MainRoute.page,
           children: [
             AutoRoute(path: '', page: HomeRoute.page),
@@ -22,10 +26,6 @@ class AppRouter extends _$AppRouter {
             AutoRoute(path: 'inbox', page: InboxRoute.page),
             AutoRoute(path: 'chats', page: ChatsRoute.page),
           ],
-        ),
-        AutoRoute(
-          path: '/login',
-          page: LoginRoute.page,
         ),
       ];
 }

@@ -108,7 +108,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   _passwordController.text,
                                 );
                             if (success && mounted) {
-                              context.router.replace(const MainRoute());
+                              context.router.replaceNamed('/main');
                             }
                           }
                         },
