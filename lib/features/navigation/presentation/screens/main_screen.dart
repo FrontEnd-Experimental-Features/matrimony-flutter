@@ -1,13 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/routes/app_router.dart';
+import '../widgets/app_drawer.dart';
 
 @RoutePage()
-class MainScreen extends StatelessWidget {
+class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsRouter(
       routes: const [
         HomeRoute(),
@@ -18,32 +20,56 @@ class MainScreen extends StatelessWidget {
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
         return Scaffold(
-          body: child,
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: tabsRouter.activeIndex,
-            onTap: tabsRouter.setActiveIndex,
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: 'Matches',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.mail),
-                label: 'Inbox',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: 'Chats',
-              ),
-            ],
+          appBar: AppBar(
+            title: Text(_getTitle(tabsRouter.activeIndex)),
+            centerTitle: true,
           ),
+          drawer: const AppDrawer(),
+          body: child,
+          bottomNavigationBar: _buildBottomNav(tabsRouter),
         );
       },
     );
+  }
+
+  Widget _buildBottomNav(TabsRouter tabsRouter) {
+    return BottomNavigationBar(
+      currentIndex: tabsRouter.activeIndex,
+      onTap: tabsRouter.setActiveIndex,
+      type: BottomNavigationBarType.fixed,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite),
+          label: 'Matches',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.mail),
+          label: 'Inbox',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.chat),
+          label: 'Chats',
+        ),
+      ],
+    );
+  }
+
+  String _getTitle(int index) {
+    switch (index) {
+      case 0:
+        return 'Home';
+      case 1:
+        return 'Matches';
+      case 2:
+        return 'Inbox';
+      case 3:
+        return 'Chats';
+      default:
+        return 'Matrimony App';
+    }
   }
 } 
