@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../data/repositories/mock_auth_repository.dart';
 
 part 'auth_controller.freezed.dart';
 
@@ -15,8 +16,7 @@ class AuthState with _$AuthState {
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  // TODO: Replace with actual repository implementation
-  throw UnimplementedError();
+  return MockAuthRepository();
 });
 
 final authControllerProvider = StateNotifierProvider<AuthController, AuthState>((ref) {
