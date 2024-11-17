@@ -45,6 +45,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const MatchesScreen(),
       );
     },
+    ProfileEditRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfileEditScreen(),
+      );
+    },
+    ProfilePreviewRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfilePreviewScreen(),
+      );
+    },
   };
 }
 
@@ -114,6 +126,34 @@ class MatchesRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MatchesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProfileEditScreen]
+class ProfileEditRoute extends PageRouteInfo<void> {
+  const ProfileEditRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfileEditRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileEditRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProfilePreviewScreen]
+class ProfilePreviewRoute extends PageRouteInfo<void> {
+  const ProfilePreviewRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfilePreviewRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfilePreviewRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

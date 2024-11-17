@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import '../../../domain/interfaces/drawer_section.dart';
 
@@ -47,6 +48,9 @@ class ProfileManagementSection implements DrawerSection {
   }
 
   void _handleNavigation(BuildContext context, String route) {
-    // TODO: Implement navigation
+    if (route == 'editProfile') {
+      context.router.pushNamed('/profile-preview');
+    }
+    // Handle other routes...
   }
 } 
