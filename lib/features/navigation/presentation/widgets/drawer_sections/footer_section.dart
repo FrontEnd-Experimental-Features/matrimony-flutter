@@ -1,26 +1,42 @@
 import 'package:flutter/material.dart';
-import '../../../domain/interfaces/drawer_section.dart';
+import 'package:auto_route/auto_route.dart';
 
-class FooterSection implements DrawerSection {
-  @override
-  String get sectionTitle => 'Legal';
+class FooterSection extends StatelessWidget {
+  const FooterSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const Divider(),
         ListTile(
+          dense: true,
           title: const Text(
             'Terms and Conditions',
             style: TextStyle(fontSize: 12),
           ),
-          onTap: () => _handleNavigation(context, 'terms'),
+          onTap: () {
+            // TODO: Implement terms and conditions navigation
+            context.router.pop(); // Close drawer
+          },
+        ),
+        ListTile(
+          dense: true,
+          title: const Text(
+            'Privacy Policy',
+            style: TextStyle(fontSize: 12),
+          ),
+          onTap: () {
+            // TODO: Implement privacy policy navigation
+            context.router.pop(); // Close drawer
+          },
         ),
         const Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(16.0),
           child: Text(
-            '© 2024 Matrimony App. All rights reserved.',
+            ' 2024 Matrimony App. All rights reserved.',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 10,
               color: Colors.grey,
@@ -30,8 +46,4 @@ class FooterSection implements DrawerSection {
       ],
     );
   }
-
-  void _handleNavigation(BuildContext context, String route) {
-    // TODO: Implement navigation
-  }
-} 
+}

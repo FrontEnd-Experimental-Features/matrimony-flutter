@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../domain/interfaces/drawer_section.dart';
+import 'package:auto_route/auto_route.dart';
 
-class DiscoverSection implements DrawerSection {
-  @override
-  String get sectionTitle => 'Discover Your Matches';
+class DiscoverSection extends StatelessWidget {
+  const DiscoverSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +16,11 @@ class DiscoverSection implements DrawerSection {
   }
 
   Widget _buildSectionHeader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
       child: Text(
-        sectionTitle,
-        style: const TextStyle(
+        'Discover Your Matches',
+        style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
@@ -35,23 +34,19 @@ class DiscoverSection implements DrawerSection {
         ListTile(
           leading: const Icon(Icons.favorite),
           title: const Text('Matches'),
-          onTap: () => _handleNavigation(context, 'matches'),
+          onTap: () => context.router.pushNamed('/matches'),
         ),
         ListTile(
           leading: const Icon(Icons.mail),
           title: const Text('Inbox'),
-          onTap: () => _handleNavigation(context, 'inbox'),
+          onTap: () => context.router.pushNamed('/inbox'),
         ),
         ListTile(
           leading: const Icon(Icons.chat),
           title: const Text('Chats'),
-          onTap: () => _handleNavigation(context, 'chats'),
+          onTap: () => context.router.pushNamed('/chats'),
         ),
       ],
     );
   }
-
-  void _handleNavigation(BuildContext context, String route) {
-    // TODO: Implement navigation
-  }
-} 
+}
