@@ -8,18 +8,18 @@ part of 'auth_user.dart';
 
 _$AuthUserImpl _$$AuthUserImplFromJson(Map<String, dynamic> json) =>
     _$AuthUserImpl(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      name: json['name'] as String,
-      photoUrl: json['photoUrl'] as String?,
-      isEmailVerified: json['isEmailVerified'] as bool? ?? false,
+      id: (json['id'] as num).toInt(),
+      userName: json['userName'] as String,
+      dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
+      gender: json['gender'] as String,
+      isVerifiedFlag: json['isVerifiedFlag'] as bool,
     );
 
 Map<String, dynamic> _$$AuthUserImplToJson(_$AuthUserImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'email': instance.email,
-      'name': instance.name,
-      'photoUrl': instance.photoUrl,
-      'isEmailVerified': instance.isEmailVerified,
+      'userName': instance.userName,
+      'dateOfBirth': instance.dateOfBirth.toIso8601String(),
+      'gender': instance.gender,
+      'isVerifiedFlag': instance.isVerifiedFlag,
     };

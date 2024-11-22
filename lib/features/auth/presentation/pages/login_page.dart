@@ -63,9 +63,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
+                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
+                    }
+                    if (!value.contains('@')) {
+                      return 'Please enter a valid email';
                     }
                     return null;
                   },
@@ -101,13 +105,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ? null
                       : () async {
                           if (_formKey.currentState!.validate()) {
-                            final success = await ref
+                            await ref
                                 .read(authControllerProvider.notifier)
                                 .login(
                                   _emailController.text,
                                   _passwordController.text,
                                 );
-                            if (success && mounted) {
+                            if (mounted && authState.user != null) {
                               context.router.replaceNamed('/main');
                             }
                           }

@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'core/di/providers.dart';
 import 'core/theme/app_theme.dart';
 import 'core/l10n/app_localizations.dart';
+import 'core/graphql/graphql_client.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initHiveForFlutter();
+  
+  final client = GraphQLConfig.initializeClient();
+  
   runApp(
-    const ProviderScope(
-      child: MatrimonyApp(),
+    ProviderScope(
+      child: GraphQLProvider(
+        client: client,
+        child: const MatrimonyApp(),
+      ),
     ),
   );
 }

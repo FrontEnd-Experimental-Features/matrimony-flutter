@@ -6,11 +6,11 @@ part 'auth_user.g.dart';
 @freezed
 class AuthUser with _$AuthUser {
   const factory AuthUser({
-    required String id,
-    required String email,
-    required String name,
-    String? photoUrl,
-    @Default(false) bool isEmailVerified,
+    required int id,
+    required String userName,
+    required DateTime dateOfBirth,
+    required String gender,
+    required bool isVerifiedFlag,
   }) = _AuthUser;
 
   factory AuthUser.fromJson(Map<String, dynamic> json) => _$AuthUserFromJson(json);

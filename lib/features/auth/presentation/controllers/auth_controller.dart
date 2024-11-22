@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import '../../../../core/graphql/graphql_client.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../../data/repositories/mock_auth_repository.dart';
+import '../../data/repositories/graphql_auth_repository.dart';
 
 part 'auth_controller.freezed.dart';
 
@@ -16,7 +18,8 @@ class AuthState with _$AuthState {
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return MockAuthRepository();
+  final client = GraphQLConfig.initializeClient().value;
+  return GraphQLAuthRepository(client);
 });
 
 final authControllerProvider = StateNotifierProvider<AuthController, AuthState>((ref) {
