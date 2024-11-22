@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../config/app_config.dart';
 
 class GraphQLConfig {
-  static const String _graphQLEndpoint = 'http://XXX.XXX.XXX:X000/graphql';
-
   static ValueNotifier<GraphQLClient> initializeClient() {
-    final HttpLink httpLink = HttpLink(_graphQLEndpoint);
+    final HttpLink httpLink = HttpLink(AppConfig.graphqlEndpoint);
 
     final GraphQLClient client = GraphQLClient(
       link: httpLink,

@@ -6,10 +6,12 @@ import 'core/di/providers.dart';
 import 'core/theme/app_theme.dart';
 import 'core/l10n/app_localizations.dart';
 import 'core/graphql/graphql_client.dart';
+import 'package:connectme/core/config/app_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
+  await AppConfig.initialize();
   
   final client = GraphQLConfig.initializeClient();
   
