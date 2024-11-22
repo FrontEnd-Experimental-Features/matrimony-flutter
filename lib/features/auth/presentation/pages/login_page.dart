@@ -28,6 +28,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
 
+    // Listen for successful login
+    ref.listen<AuthState>(
+      authControllerProvider,
+      (previous, current) {
+        if (current.user != null && !current.isLoading) {
+          context.router.replaceNamed('/main');
+        }
+      },
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -103,17 +113,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ElevatedButton(
                   onPressed: authState.isLoading
                       ? null
-                      : () async {
+                      : () {
                           if (_formKey.currentState!.validate()) {
-                            await ref
+                            ref
                                 .read(authControllerProvider.notifier)
                                 .login(
                                   _emailController.text,
                                   _passwordController.text,
                                 );
-                            if (mounted && authState.user != null) {
-                              context.router.replaceNamed('/main');
-                            }
                           }
                         },
                   style: ElevatedButton.styleFrom(
