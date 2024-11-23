@@ -55,26 +55,36 @@ class AuthController extends StateNotifier<AuthState> {
     );
   }
 
-  Future<void> logout() async {
-    state = state.copyWith(isLoading: true, error: null);
+  Future<bool> logout() async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
 
-    final result = await _authRepository.logout();
+      final result = await _authRepository.logout();
 
-    result.fold(
-      (failure) {
-        state = state.copyWith(
-          isLoading: false,
-          error: failure.message,
-        );
-      },
-      (_) {
-        state = state.copyWith(
-          isLoading: false,
-          user: null,
-          error: null,
-        );
-      },
-    );
+      return result.fold(
+        (failure) {
+          state = state.copyWith(
+            isLoading: false,
+            error: failure.message,
+          );
+          return false;
+        },
+        (_) {
+          state = state.copyWith(
+            isLoading: false,
+            user: null,
+            error: null,
+          );
+          return true;
+        },
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.toString(),
+      );
+      return false;
+    }
   }
 
   Future<void> checkAuthState() async {

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'drawer_sections/discover_section.dart';
 import 'drawer_sections/settings_section.dart';
 import 'drawer_sections/footer_section.dart';
+import 'drawer_sections/logout_section.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
@@ -44,6 +45,7 @@ class AppDrawer extends ConsumerWidget {
           const DiscoverSection(),
           const Divider(),
           const SettingsSection(),
+          const LogoutSection(),
           const FooterSection(),
         ],
       ),

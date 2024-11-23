@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:fpdart/fpdart.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/graphql/graphql_client.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 
@@ -29,6 +30,14 @@ class GraphQLAuthRepository implements AuthRepository {
         dateOfBirth
         gender
         isVerifiedFlag
+      }
+    }
+  ''';
+
+  static const String _logoutMutation = r'''
+    mutation Signout {
+      signout {
+        success
       }
     }
   ''';
@@ -70,7 +79,31 @@ class GraphQLAuthRepository implements AuthRepository {
 
   @override
   Future<Either<Failure, Unit>> logout() async {
-    return const Right(unit);
+    try {
+      // Execute signout mutation first to properly end the session
+      final result = await _client.mutate(
+        MutationOptions(
+          document: gql(_logoutMutation),
+          fetchPolicy: FetchPolicy.noCache,
+        ),
+      );
+
+      // Even if the server call fails, we should clear local state
+      // to ensure the user can log out locally
+      await GraphQLConfig.clearAuthToken();
+      await _client.resetStore();
+
+      if (result.hasException) {
+        print('Logout warning: ${result.exception}'); // Debug log
+        // Don't return error since we've cleared local state
+      }
+
+      return const Right(unit);
+    } catch (e) {
+      print('Logout exception: $e'); // Debug log
+      // Still return success if we cleared local state
+      return const Right(unit);
+    }
   }
 
   @override
