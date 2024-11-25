@@ -12,12 +12,12 @@ class GraphQLAuthRepository implements AuthRepository {
   GraphQLAuthRepository(this._client);
 
   static const String _loginMutation = r'''
-    mutation Login($input: AuthenticateInput!) {
-      authenticate(input: $input) {
+    mutation Authenticate($email: String!, $password: String!) {
+      authenticate(input: {input: {email: $email, password: $password}}) {
         authResult {
           userDetails
+          clientMutationId
         }
-        clientMutationId
       }
     }
   ''';
@@ -49,13 +49,10 @@ class GraphQLAuthRepository implements AuthRepository {
         MutationOptions(
           document: gql(_loginMutation),
           variables: {
-            'input': {
-              'input': {
-                'email': email,
-                'password': password,
-              }
-            }
+            'email': email,
+            'password': password,
           },
+          fetchPolicy: FetchPolicy.noCache,
         ),
       );
 
@@ -63,15 +60,27 @@ class GraphQLAuthRepository implements AuthRepository {
         return Left(ServerFailure(result.exception.toString()));
       }
 
-      final userJsonString =
-          result.data?['authenticate']?['authResult']?['userDetails'];
-      if (userJsonString == null) {
-        return Left(ServerFailure('Invalid email or password'));
+      final userDetailsStr = result.data?['authenticate']['authResult']['userDetails'] as String?;
+      if (userDetailsStr == null) {
+        return Left(ServerFailure('Invalid response format'));
       }
 
-      // Parse the JSON string into a Map
-      final userJson = jsonDecode(userJsonString as String);
-      return Right(AuthUser.fromJson(userJson));
+      try {
+        final userDetails = json.decode(userDetailsStr) as Map<String, dynamic>;
+        final jwtToken = userDetails['jwtToken'] as String?;
+        
+        if (jwtToken == null) {
+          return Left(ServerFailure('JWT token not found in response'));
+        }
+
+        // Store the JWT token
+        await GraphQLConfig.setAuthToken(jwtToken);
+
+        // Create AuthUser from response
+        return Right(AuthUser.fromJson(userDetails));
+      } catch (e) {
+        return Left(ServerFailure('Failed to parse user details: $e'));
+      }
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

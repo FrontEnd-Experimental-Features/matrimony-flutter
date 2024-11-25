@@ -7,18 +7,20 @@ import 'core/theme/app_theme.dart';
 import 'core/l10n/app_localizations.dart';
 import 'core/graphql/graphql_client.dart';
 import 'package:connectme/core/config/app_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await initHiveForFlutter();
   await AppConfig.initialize();
-  
-  final client = GraphQLConfig.initializeClient();
-  
+
+  final graphQLClient = GraphQLConfig.initializeClient();
+
   runApp(
     ProviderScope(
       child: GraphQLProvider(
-        client: client,
+        client: graphQLClient,
         child: const MatrimonyApp(),
       ),
     ),

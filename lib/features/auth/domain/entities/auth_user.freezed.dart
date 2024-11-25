@@ -22,9 +22,11 @@ AuthUser _$AuthUserFromJson(Map<String, dynamic> json) {
 mixin _$AuthUser {
   int get id => throw _privateConstructorUsedError;
   String get userName => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
   DateTime get dateOfBirth => throw _privateConstructorUsedError;
   String get gender => throw _privateConstructorUsedError;
   bool get isVerifiedFlag => throw _privateConstructorUsedError;
+  String? get jwtToken => throw _privateConstructorUsedError;
 
   /// Serializes this AuthUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,9 +46,11 @@ abstract class $AuthUserCopyWith<$Res> {
   $Res call(
       {int id,
       String userName,
+      @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
       DateTime dateOfBirth,
       String gender,
-      bool isVerifiedFlag});
+      bool isVerifiedFlag,
+      String? jwtToken});
 }
 
 /// @nodoc
@@ -69,6 +73,7 @@ class _$AuthUserCopyWithImpl<$Res, $Val extends AuthUser>
     Object? dateOfBirth = null,
     Object? gender = null,
     Object? isVerifiedFlag = null,
+    Object? jwtToken = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -91,6 +96,10 @@ class _$AuthUserCopyWithImpl<$Res, $Val extends AuthUser>
           ? _value.isVerifiedFlag
           : isVerifiedFlag // ignore: cast_nullable_to_non_nullable
               as bool,
+      jwtToken: freezed == jwtToken
+          ? _value.jwtToken
+          : jwtToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -106,9 +115,11 @@ abstract class _$$AuthUserImplCopyWith<$Res>
   $Res call(
       {int id,
       String userName,
+      @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
       DateTime dateOfBirth,
       String gender,
-      bool isVerifiedFlag});
+      bool isVerifiedFlag,
+      String? jwtToken});
 }
 
 /// @nodoc
@@ -129,6 +140,7 @@ class __$$AuthUserImplCopyWithImpl<$Res>
     Object? dateOfBirth = null,
     Object? gender = null,
     Object? isVerifiedFlag = null,
+    Object? jwtToken = freezed,
   }) {
     return _then(_$AuthUserImpl(
       id: null == id
@@ -151,6 +163,10 @@ class __$$AuthUserImplCopyWithImpl<$Res>
           ? _value.isVerifiedFlag
           : isVerifiedFlag // ignore: cast_nullable_to_non_nullable
               as bool,
+      jwtToken: freezed == jwtToken
+          ? _value.jwtToken
+          : jwtToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -161,9 +177,11 @@ class _$AuthUserImpl implements _AuthUser {
   const _$AuthUserImpl(
       {required this.id,
       required this.userName,
+      @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
       required this.dateOfBirth,
       required this.gender,
-      required this.isVerifiedFlag});
+      required this.isVerifiedFlag,
+      this.jwtToken});
 
   factory _$AuthUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthUserImplFromJson(json);
@@ -173,15 +191,18 @@ class _$AuthUserImpl implements _AuthUser {
   @override
   final String userName;
   @override
+  @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
   final DateTime dateOfBirth;
   @override
   final String gender;
   @override
   final bool isVerifiedFlag;
+  @override
+  final String? jwtToken;
 
   @override
   String toString() {
-    return 'AuthUser(id: $id, userName: $userName, dateOfBirth: $dateOfBirth, gender: $gender, isVerifiedFlag: $isVerifiedFlag)';
+    return 'AuthUser(id: $id, userName: $userName, dateOfBirth: $dateOfBirth, gender: $gender, isVerifiedFlag: $isVerifiedFlag, jwtToken: $jwtToken)';
   }
 
   @override
@@ -196,13 +217,15 @@ class _$AuthUserImpl implements _AuthUser {
                 other.dateOfBirth == dateOfBirth) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.isVerifiedFlag, isVerifiedFlag) ||
-                other.isVerifiedFlag == isVerifiedFlag));
+                other.isVerifiedFlag == isVerifiedFlag) &&
+            (identical(other.jwtToken, jwtToken) ||
+                other.jwtToken == jwtToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, userName, dateOfBirth, gender, isVerifiedFlag);
+      runtimeType, id, userName, dateOfBirth, gender, isVerifiedFlag, jwtToken);
 
   /// Create a copy of AuthUser
   /// with the given fields replaced by the non-null parameter values.
@@ -224,9 +247,11 @@ abstract class _AuthUser implements AuthUser {
   const factory _AuthUser(
       {required final int id,
       required final String userName,
+      @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
       required final DateTime dateOfBirth,
       required final String gender,
-      required final bool isVerifiedFlag}) = _$AuthUserImpl;
+      required final bool isVerifiedFlag,
+      final String? jwtToken}) = _$AuthUserImpl;
 
   factory _AuthUser.fromJson(Map<String, dynamic> json) =
       _$AuthUserImpl.fromJson;
@@ -236,11 +261,14 @@ abstract class _AuthUser implements AuthUser {
   @override
   String get userName;
   @override
+  @JsonKey(fromJson: _dateFromJson, toJson: _dateToJson)
   DateTime get dateOfBirth;
   @override
   String get gender;
   @override
   bool get isVerifiedFlag;
+  @override
+  String? get jwtToken;
 
   /// Create a copy of AuthUser
   /// with the given fields replaced by the non-null parameter values.
