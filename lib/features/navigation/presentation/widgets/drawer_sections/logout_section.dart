@@ -16,42 +16,49 @@ class LogoutSection extends ConsumerWidget {
       // Show loading indicator
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logging out...')),
+          const SnackBar(
+            content: Text('Logging out...'),
+            duration: Duration(seconds: 2),
+          ),
         );
       }
 
       // Close the drawer if it's open
-      if (Scaffold.of(context).isDrawerOpen) {
+      if (context.mounted && Scaffold.of(context).isDrawerOpen) {
         developer.log('Closing drawer');
         Navigator.of(context).pop();
       }
 
       developer.log('Calling logout on auth controller');
-      final success = await ref.read(authControllerProvider.notifier).logout();
-      
-      if (!success) {
+      final result = await ref.read(authControllerProvider.notifier).logout();
+
+      if (!result) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Logout failed. Please try again.'),
+              content: Text('Failed to log out. Please try again.'),
               backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
             ),
           );
         }
         return;
       }
 
-      developer.log('Logout successful, attempting navigation');
+      developer.log('Logout successful, navigating to login');
       if (context.mounted) {
-        // Get the router instance
-        final router = AutoRouter.of(context);
-        
         // Navigate to login and clear the stack
-        await router.pushAndPopUntil(
-          const LoginRoute(),
-          predicate: (_) => false,
-        );
-        developer.log('Navigation completed');
+        await AutoRouter.of(context).replaceAll([const LoginRoute()]);
+        
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Successfully logged out'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
       }
     } catch (e, stackTrace) {
       developer.log(
@@ -62,10 +69,10 @@ class LogoutSection extends ConsumerWidget {
       
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Logout error: ${e.toString()}'),
+          const SnackBar(
+            content: Text('An error occurred during logout'),
             backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
+            duration: Duration(seconds: 3),
           ),
         );
       }
@@ -82,36 +89,39 @@ class LogoutSection extends ConsumerWidget {
         ListTile(
           leading: const Icon(Icons.logout, color: Colors.red),
           title: const Text('Logout', style: TextStyle(color: Colors.red)),
-          onTap: authState.isLoading
-              ? null
-              : () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: !authState.isLoading,
-                    builder: (dialogContext) => AlertDialog(
-                      title: const Text('Logout'),
-                      content: const Text('Are you sure you want to logout?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(dialogContext),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(dialogContext);
-                            _handleLogout(context, ref);
-                          },
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.red,
-                          ),
-                          child: const Text('Logout'),
-                        ),
-                      ],
+          enabled: !authState.isLoading,
+          onTap: () {
+            showDialog(
+              context: context,
+              barrierDismissible: !authState.isLoading,
+              builder: (dialogContext) => AlertDialog(
+                title: const Text('Logout'),
+                content: const Text('Are you sure you want to log out?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(dialogContext),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(dialogContext);
+                      _handleLogout(context, ref);
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red,
                     ),
-                  );
-                },
+                    child: const Text('Logout'),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
-        if (authState.isLoading) const AppLoadingOverlay(),
+        if (authState.isLoading) 
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: AppLoadingOverlay(),
+          ),
       ],
     );
   }
