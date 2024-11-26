@@ -9,33 +9,45 @@ class SettingsSection extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Text(
             'Settings',
-            style: TextStyle(
-              fontSize: 16,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor,
             ),
           ),
         ),
         ListTile(
-          leading: const Icon(Icons.settings),
-          title: const Text('Account Settings'),
+          leading: Icon(Icons.settings, 
+            color: Theme.of(context).primaryColor.withOpacity(0.8),
+          ),
+          title: Text('Account Settings',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
           onTap: () {
             // TODO: Implement settings navigation
           },
         ),
         ListTile(
-          leading: const Icon(Icons.privacy_tip),
-          title: const Text('Privacy'),
+          leading: Icon(Icons.privacy_tip,
+            color: Theme.of(context).primaryColor.withOpacity(0.8),
+          ),
+          title: Text('Privacy',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
           onTap: () {
             // TODO: Implement privacy settings
           },
         ),
         ListTile(
-          leading: const Icon(Icons.notifications),
-          title: const Text('Notifications'),
+          leading: Icon(Icons.notifications,
+            color: Theme.of(context).primaryColor.withOpacity(0.8),
+          ),
+          title: Text('Notifications',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
           onTap: () {
             // TODO: Implement notifications settings
           },

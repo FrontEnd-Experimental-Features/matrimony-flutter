@@ -15,28 +15,38 @@ class AppDrawer extends ConsumerWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.pink,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).primaryColor.withOpacity(0.8),
+                ],
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.person, size: 30),
+                CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  child: Icon(Icons.person, 
+                    size: 30,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   'Connect2Marriage',
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
-                    fontSize: 20,
                   ),
                 ),
                 Text(
                   'ID: MAT${DateTime.now().year}1234',
-                  style: const TextStyle(
-                    color: Colors.white70,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.white.withOpacity(0.7),
                   ),
                 ),
               ],
