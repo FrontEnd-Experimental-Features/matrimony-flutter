@@ -35,9 +35,13 @@ class GraphQLAuthRepository implements AuthRepository {
   ''';
 
   static const String _logoutMutation = r'''
-    mutation Signout {
-      signout {
-        success
+    mutation Logout($userId: Int!) {
+      logout(input: {input: {userId: $userId, logout: true}}) {
+        logoutResult {
+          success
+          logoutTime
+        }
+        clientMutationId
       }
     }
   ''';
@@ -89,22 +93,37 @@ class GraphQLAuthRepository implements AuthRepository {
   @override
   Future<Either<Failure, Unit>> logout() async {
     try {
-      // Execute signout mutation first to properly end the session
+      // Get current user ID before logging out
+      final currentUserResult = await getCurrentUser();
+      final userId = currentUserResult.fold(
+        (failure) => null,
+        (user) => user.id,
+      );
+
+      // Execute logout mutation with user ID if available
       final result = await _client.mutate(
         MutationOptions(
           document: gql(_logoutMutation),
+          variables: {
+            'userId': userId ?? 0, // Provide a default value if userId is null
+          },
           fetchPolicy: FetchPolicy.noCache,
         ),
       );
 
-      // Even if the server call fails, we should clear local state
-      // to ensure the user can log out locally
+      // Clear local state regardless of server response
       await GraphQLConfig.clearAuthToken();
       await _client.resetStore();
 
       if (result.hasException) {
         print('Logout warning: ${result.exception}'); // Debug log
         // Don't return error since we've cleared local state
+      } else {
+        final logoutTime = result.data?['logout']?['logoutResult']?['logoutTime'];
+        final success = result.data?['logout']?['logoutResult']?['success'] ?? false;
+        if (logoutTime != null) {
+          print('User logged out at: $logoutTime (Success: $success)'); // Debug log
+        }
       }
 
       return const Right(unit);
