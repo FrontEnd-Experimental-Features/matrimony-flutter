@@ -112,7 +112,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your password';
                               }
-                              if (value.length < 6) {
+                              if (value.length < 2) {
                                 return 'Password must be at least 6 characters';
                               }
                               return null;
@@ -155,7 +155,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                       const SizedBox(height: 16),
                       TextButton(
-                        onPressed: () => context.router.push(const SignupRoute()),
+                        onPressed: () =>
+                            context.router.push(const SignupRoute()),
                         child: RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
