@@ -51,82 +51,89 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: theme.colorScheme.primary.withOpacity(0.2),
-              width: 1.5,
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white.withOpacity(0.2),
-                Colors.white.withOpacity(0.1),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.primary.withOpacity(0.1),
-                blurRadius: 8,
-                spreadRadius: 0,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: TextFormField(
-            controller: controller,
-            decoration: InputDecoration(
-              labelText: labelText,
-              hintText: hintText,
-              prefixIcon: prefixIcon != null 
-                ? Icon(
-                    prefixIcon,
-                    color: theme.colorScheme.primary.withOpacity(0.7),
-                  ) 
-                : null,
-              suffixIcon: suffixIcon,
-              errorText: errorText,
-              contentPadding: contentPadding ?? const EdgeInsets.all(16),
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              focusedErrorBorder: InputBorder.none,
-              filled: true,
-              fillColor: Colors.transparent,
-              labelStyle: TextStyle(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-              ),
-              hintStyle: TextStyle(
-                color: theme.colorScheme.onSurface.withOpacity(0.5),
-              ),
-            ),
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurface,
-            ),
-            obscureText: obscureText,
-            keyboardType: keyboardType,
-            validator: validator,
-            inputFormatters: inputFormatters,
-            onChanged: onChanged,
-            maxLines: maxLines,
-            minLines: minLines,
-            readOnly: readOnly,
-            onTap: onTap,
-            autofocus: autofocus,
-            focusNode: focusNode,
-            enabled: enabled,
-            textCapitalization: textCapitalization,
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        prefixIcon: prefixIcon != null 
+          ? Icon(
+              prefixIcon,
+              color: theme.colorScheme.primary.withOpacity(0.7),
+              size: 20,
+            ) 
+          : null,
+        suffixIcon: suffixIcon,
+        errorText: errorText,
+        contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: theme.colorScheme.outline.withOpacity(0.3),
+            width: 1,
           ),
         ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: theme.colorScheme.outline.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: theme.colorScheme.primary,
+            width: 1.5,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: theme.colorScheme.error,
+            width: 1,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: theme.colorScheme.error,
+            width: 1.5,
+          ),
+        ),
+        filled: true,
+        fillColor: isDark 
+          ? theme.colorScheme.surfaceVariant.withOpacity(0.3)
+          : theme.colorScheme.surface,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        labelStyle: TextStyle(
+          fontSize: 14,
+          color: theme.colorScheme.onSurface.withOpacity(0.7),
+        ),
+        hintStyle: TextStyle(
+          fontSize: 14,
+          color: theme.colorScheme.onSurface.withOpacity(0.5),
+        ),
       ),
+      style: TextStyle(
+        fontSize: 14,
+        color: theme.colorScheme.onSurface,
+      ),
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      validator: validator,
+      inputFormatters: inputFormatters,
+      onChanged: onChanged,
+      maxLines: maxLines,
+      minLines: minLines,
+      readOnly: readOnly,
+      onTap: onTap,
+      autofocus: autofocus,
+      focusNode: focusNode,
+      textCapitalization: textCapitalization,
+      enabled: enabled,
     );
   }
 }
