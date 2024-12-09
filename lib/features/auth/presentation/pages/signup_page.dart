@@ -60,205 +60,219 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BackgroundArt(
-        child: Stack(
-          children: [
-            SafeArea(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background art
+          BackgroundArt(
+            child: Container(), // Empty container to satisfy child requirement
+          ),
+          
+          // Main content
+          SafeArea(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 40),
-                        const Text(
-                          'Create Account',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 40),
+                      const Text(
+                        'Create Account',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Join Connect2Marriage and find your perfect match',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
-                          textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Join Connect2Marriage and find your perfect match',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
                         ),
-                        const SizedBox(height: 32),
-                        AppTextField(
-                          controller: _emailController,
-                          labelText: 'Email',
-                          prefixIcon: Icons.email,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            if (!value.contains('@')) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        // Date of Birth Field
-                        InkWell(
-                          onTap: () => _selectDate(context),
-                          child: IgnorePointer(
-                            child: AppTextField(
-                              controller: TextEditingController(
-                                text: _selectedDate != null
-                                    ? DateFormat('MMMM d, y')
-                                        .format(_selectedDate!)
-                                    : '',
-                              ),
-                              labelText: 'Date of Birth',
-                              prefixIcon: Icons.calendar_today,
-                              validator: (value) {
-                                if (_selectedDate == null) {
-                                  return 'Please select your date of birth';
-                                }
-                                return null;
-                              },
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      AppTextField(
+                        controller: _emailController,
+                        labelText: 'Email',
+                        prefixIcon: Icons.email,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // Date of Birth Field
+                      InkWell(
+                        onTap: () => _selectDate(context),
+                        child: IgnorePointer(
+                          child: AppTextField(
+                            controller: TextEditingController(
+                              text: _selectedDate != null
+                                  ? DateFormat('MMMM d, y')
+                                      .format(_selectedDate!)
+                                  : '',
                             ),
+                            labelText: 'Date of Birth',
+                            prefixIcon: Icons.calendar_today,
+                            validator: (value) {
+                              if (_selectedDate == null) {
+                                return 'Please select your date of birth';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        CustomDropdown(
-                          options: _genders,
-                          selectedValue: _selectedGender,
-                          labelText: 'Gender',
-                          prefixIcon: Icons.person_outline,
-                          onChanged: (value) {
+                      ),
+                      const SizedBox(height: 16),
+                      CustomDropdown(
+                        options: _genders,
+                        selectedValue: _selectedGender,
+                        labelText: 'Gender',
+                        prefixIcon: Icons.person_outline,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedGender = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (_selectedGender == null ||
+                              _selectedGender!.isEmpty) {
+                            return 'Please select your gender';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      AppTextField(
+                        controller: _passwordController,
+                        labelText: 'Password',
+                        prefixIcon: Icons.lock,
+                        obscureText: _obscurePassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
                             setState(() {
-                              _selectedGender = value;
+                              _obscurePassword = !_obscurePassword;
                             });
                           },
-                          validator: (value) {
-                            if (_selectedGender == null ||
-                                _selectedGender!.isEmpty) {
-                              return 'Please select your gender';
-                            }
-                            return null;
-                          },
                         ),
-                        const SizedBox(height: 16),
-                        AppTextField(
-                          controller: _passwordController,
-                          labelText: 'Password',
-                          prefixIcon: Icons.lock,
-                          obscureText: _obscurePassword,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      AppTextField(
+                        controller: _confirmPasswordController,
+                        labelText: 'Confirm Password',
+                        prefixIcon: Icons.lock,
+                        obscureText: _obscureConfirmPassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirmPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        AppTextField(
-                          controller: _confirmPasswordController,
-                          labelText: 'Confirm Password',
-                          prefixIcon: Icons.lock,
-                          obscureText: _obscureConfirmPassword,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureConfirmPassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureConfirmPassword =
-                                    !_obscureConfirmPassword;
-                              });
-                            },
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please confirm your password';
-                            }
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        ElevatedButton(
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // TODO: Implement signup
-                            }
+                            setState(() {
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword;
+                            });
                           },
-                          child: const Text('Sign Up'),
                         ),
-                        const SizedBox(height: 16),
-                        TextButton(
-                          onPressed: () => context.router.back(),
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                                fontSize: 14,
-                              ),
-                              children: [
-                                const TextSpan(
-                                    text: 'Already have an account? '),
-                                TextSpan(
-                                  text: 'Login',
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please confirm your password';
+                          }
+                          if (value != _passwordController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            // TODO: Implement signup
+                          }
+                        },
+                        child: const Text('Sign Up'),
+                      ),
+                      const SizedBox(height: 16),
+                      TextButton(
+                        onPressed: () => context.router.back(),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.onBackground,
+                              fontSize: 14,
                             ),
+                            children: [
+                              const TextSpan(
+                                  text: 'Already have an account? '),
+                              TextSpan(
+                                text: 'Login',
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 16),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
                   ),
                 ),
               ),
             ),
-            SafeArea(
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => context.router.back(),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => context.router.back(),
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
