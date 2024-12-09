@@ -18,7 +18,7 @@ class FooterSection extends StatelessWidget {
           ),
           onTap: () {
             // TODO: Implement terms and conditions navigation
-            context.router.pop(); // Close drawer
+            context.router.back(); // Close drawer
           },
         ),
         ListTile(
@@ -29,7 +29,7 @@ class FooterSection extends StatelessWidget {
           ),
           onTap: () {
             // TODO: Implement privacy policy navigation
-            context.router.pop(); // Close drawer
+            context.router.back(); // Close drawer
           },
         ),
         const Padding(

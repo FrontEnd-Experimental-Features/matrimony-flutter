@@ -9,23 +9,42 @@ import '../../features/navigation/presentation/screens/main_screen.dart';
 
 part 'app_router.gr.dart';
 
-@AutoRouterConfig()
-class AppRouter extends _$AppRouter {
+@AutoRouterConfig(replaceInRouteName: 'Page|Screen,Route')
+class AppRouter extends RootStackRouter {
+  AppRouter() : super();
+
   @override
-  List<AutoRoute> get routes => [
+  RouteType get defaultRouteType => const RouteType.material();
+
+  @override
+  final List<AutoRoute> routes = [
+    AutoRoute(
+      path: '/',
+      page: LoginRoute.page,
+      initial: true,
+    ),
+    AutoRoute(
+      path: '/main',
+      page: MainRoute.page,
+      children: [
         AutoRoute(
-          path: '/',
-          page: LoginRoute.page,
+          path: '',
+          page: HomeRoute.page,
+          initial: true,
         ),
         AutoRoute(
-          path: '/main',
-          page: MainRoute.page,
-          children: [
-            AutoRoute(path: '', page: HomeRoute.page),
-            AutoRoute(path: 'matches', page: MatchesRoute.page),
-            AutoRoute(path: 'inbox', page: InboxRoute.page),
-            AutoRoute(path: 'chats', page: ChatsRoute.page),
-          ],
+          path: 'matches',
+          page: MatchesRoute.page,
         ),
-      ];
+        AutoRoute(
+          path: 'inbox',
+          page: InboxRoute.page,
+        ),
+        AutoRoute(
+          path: 'chats',
+          page: ChatsRoute.page,
+        ),
+      ],
+    ),
+  ];
 }

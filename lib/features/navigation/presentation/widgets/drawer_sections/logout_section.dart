@@ -47,32 +47,30 @@ class LogoutSection extends ConsumerWidget {
 
       developer.log('Logout successful, navigating to login');
       if (context.mounted) {
-        // Navigate to login and clear the stack
-        await AutoRouter.of(context).replaceAll([const LoginRoute()]);
-        
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Successfully logged out'),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-            ),
-          );
-        }
+        // Clear the entire navigation stack and push login route
+        final router = AutoRouter.of(context);
+        await router.pushAndPopUntil(
+          const LoginRoute(),
+          predicate: (_) => false, // This removes all routes from the stack
+        );
       }
-    } catch (e, stackTrace) {
-      developer.log(
-        'Error during logout',
-        error: e,
-        stackTrace: stackTrace,
-      );
-      
+    } catch (e) {
+      developer.log('Error during logout: $e');
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('An error occurred during logout'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text(
+              'Error during logout',
+              style: TextStyle(color: Colors.red),
+            ),
+            content: const Text('An error occurred during logout'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
           ),
         );
       }
