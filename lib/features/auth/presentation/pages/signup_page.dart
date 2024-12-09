@@ -67,7 +67,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           BackgroundArt(
             child: Container(), // Empty container to satisfy child requirement
           ),
-          
+
           // Main content
           SafeArea(
             child: SingleChildScrollView(
@@ -222,23 +222,21 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       ),
                       const SizedBox(height: 16),
                       TextButton(
-                        onPressed: () => context.router.back(),
+                        onPressed: () =>
+                            context.router.replace(const LoginRoute()),
                         child: RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.onBackground,
+                              color: Theme.of(context).colorScheme.onBackground,
                               fontSize: 14,
                             ),
                             children: [
-                              const TextSpan(
-                                  text: 'Already have an account? '),
+                              const TextSpan(text: 'Already have an account? '),
                               TextSpan(
                                 text: 'Login',
                                 style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.primary,
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -261,12 +259,13 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+                    color:
+                        Theme.of(context).colorScheme.surface.withOpacity(0.5),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
-                    onPressed: () => context.router.back(),
+                    onPressed: () => context.router.replace(const LoginRoute()),
                   ),
                 ),
               ),
