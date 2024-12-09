@@ -105,8 +105,8 @@ class AppTextField extends StatelessWidget {
         ),
         filled: true,
         fillColor: isDark 
-          ? theme.colorScheme.surfaceVariant.withOpacity(0.3)
-          : theme.colorScheme.surface,
+          ? Colors.transparent
+          : Colors.transparent,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         labelStyle: TextStyle(
           fontSize: 14,
