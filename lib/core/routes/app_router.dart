@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 
 import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/signup_page.dart';
 import '../../features/chats/presentation/screens/chats_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/inbox/presentation/screens/inbox_screen.dart';
@@ -22,6 +23,10 @@ class AppRouter extends RootStackRouter {
       path: '/',
       page: LoginRoute.page,
       initial: true,
+    ),
+    AutoRoute(
+      path: '/signup',
+      page: SignupRoute.page,
     ),
     AutoRoute(
       path: '/main',

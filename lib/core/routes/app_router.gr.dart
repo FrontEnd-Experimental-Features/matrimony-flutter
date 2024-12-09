@@ -122,3 +122,22 @@ class MatchesRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [SignupPage]
+class SignupRoute extends PageRouteInfo<void> {
+  const SignupRoute({List<PageRouteInfo>? children})
+      : super(
+          SignupRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SignupRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SignupPage();
+    },
+  );
+}
