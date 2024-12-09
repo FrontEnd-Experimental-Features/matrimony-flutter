@@ -5,6 +5,7 @@ import '../../../../core/routes/app_router.dart';
 import '../controllers/auth_controller.dart';
 import '../../../../shared/widgets/loading_widget.dart';
 import '../../../../shared/widgets/background_art.dart';
+import '../../../../shared/widgets/form/app_text_field.dart';
 
 @RoutePage()
 class LoginPage extends ConsumerStatefulWidget {
@@ -18,6 +19,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -77,12 +79,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             children: [
-                              TextFormField(
+                              AppTextField(
                                 controller: _emailController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Email',
-                                  prefixIcon: Icon(Icons.email),
-                                ),
+                                labelText: 'Email',
+                                prefixIcon: Icons.email,
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -95,16 +95,29 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 },
                               ),
                               const SizedBox(height: 16),
-                              TextFormField(
+                              AppTextField(
                                 controller: _passwordController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Password',
-                                  prefixIcon: Icon(Icons.lock),
+                                labelText: 'Password',
+                                prefixIcon: Icons.lock,
+                                obscureText: _obscurePassword,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
                                 ),
-                                obscureText: true,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your password';
+                                  }
+                                  if (value.length < 2) {
+                                    return 'Password must be at least 6 characters';
                                   }
                                   return null;
                                 },

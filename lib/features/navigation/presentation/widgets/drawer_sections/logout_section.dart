@@ -47,12 +47,9 @@ class LogoutSection extends ConsumerWidget {
 
       developer.log('Logout successful, navigating to login');
       if (context.mounted) {
-        // Clear the entire navigation stack and push login route
+        // Replace all routes with login route
         final router = AutoRouter.of(context);
-        await router.pushAndPopUntil(
-          const LoginRoute(),
-          predicate: (_) => false, // This removes all routes from the stack
-        );
+        await router.replaceAll([const LoginRoute()]);
       }
     } catch (e) {
       developer.log('Error during logout: $e');

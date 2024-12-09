@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/routes/app_router.dart';
 import '../widgets/app_drawer.dart';
+import '../../../../features/auth/presentation/controllers/auth_controller.dart';
 
 @RoutePage()
 class MainScreen extends ConsumerWidget {
@@ -10,6 +11,16 @@ class MainScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Listen for auth state changes
+    ref.listen<AuthState>(
+      authControllerProvider,
+      (previous, current) {
+        if (current.user == null && !current.isLoading) {
+          context.router.replaceAll([const LoginRoute()]);
+        }
+      },
+    );
+
     return AutoTabsRouter(
       routes: const [
         HomeRoute(),
@@ -72,4 +83,4 @@ class MainScreen extends ConsumerWidget {
         return 'Matrimony App';
     }
   }
-} 
+}

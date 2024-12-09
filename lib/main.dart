@@ -37,6 +37,7 @@ class MatrimonyApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'Matrimony App',
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       routerDelegate: router.delegate(),
