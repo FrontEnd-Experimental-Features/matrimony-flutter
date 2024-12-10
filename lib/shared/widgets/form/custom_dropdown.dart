@@ -27,7 +27,8 @@ class CustomDropdown extends StatelessWidget {
           insetPadding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
+              color:
+                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
@@ -57,15 +58,17 @@ class CustomDropdown extends StatelessWidget {
                         Navigator.of(context).pop();
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 8),
                         child: Row(
                           children: [
                             Text(
                               option,
                               style: TextStyle(
-                                color: Theme.of(context).colorScheme.onBackground,
-                                fontWeight: selectedValue == option 
-                                    ? FontWeight.bold 
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
+                                fontWeight: selectedValue == option
+                                    ? FontWeight.bold
                                     : FontWeight.normal,
                               ),
                             ),
@@ -118,7 +121,15 @@ class CustomDropdown extends StatelessWidget {
           ),
           decoration: InputDecoration(
             labelText: labelText,
-            prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+            //prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+            prefixIcon: prefixIcon != null
+                ? Icon(
+                    prefixIcon,
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.7),
+                    size: 20,
+                  )
+                : null,
             suffixIcon: const Icon(Icons.arrow_drop_down),
             filled: false,
             fillColor: Colors.transparent,
@@ -138,12 +149,13 @@ class CustomDropdown extends StatelessWidget {
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
           ),
-          validator: validator ?? (value) {
-            if (selectedValue == null || selectedValue!.isEmpty) {
-              return 'Please select a $labelText';
-            }
-            return null;
-          },
+          validator: validator ??
+              (value) {
+                if (selectedValue == null || selectedValue!.isEmpty) {
+                  return 'Please select a $labelText';
+                }
+                return null;
+              },
         ),
       ),
     );
