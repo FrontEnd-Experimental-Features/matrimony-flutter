@@ -20,12 +20,30 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _middleNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   DateTime? _selectedDate;
   String? _selectedGender;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
   final List<String> _genders = ['Male', 'Female', 'Other'];
+
+  String? _validateName(String? value, String fieldName, {bool isRequired = true}) {
+    if (isRequired && (value == null || value.isEmpty)) {
+      return 'Please enter your $fieldName';
+    }
+    if (value != null && value.isNotEmpty) {
+      if (value.length > 20) {
+        return '$fieldName cannot exceed 20 characters';
+      }
+      if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+        return 'Only alphabets are allowed';
+      }
+    }
+    return null;
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -54,6 +72,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _firstNameController.dispose();
+    _middleNameController.dispose();
+    _lastNameController.dispose();
     super.dispose();
   }
 
@@ -97,6 +118,36 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 32),
+                      // First Name
+                      AppTextField(
+                        controller: _firstNameController,
+                        labelText: 'First Name',
+                        prefixIcon: Icons.person_outline,
+                        keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
+                        validator: (value) => _validateName(value, 'first name'),
+                      ),
+                      const SizedBox(height: 16),
+                      // Middle Name (Optional)
+                      AppTextField(
+                        controller: _middleNameController,
+                        labelText: 'Middle Name (Optional)',
+                        prefixIcon: Icons.person_outline,
+                        keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
+                        validator: (value) => _validateName(value, 'middle name', isRequired: false),
+                      ),
+                      const SizedBox(height: 16),
+                      // Last Name
+                      AppTextField(
+                        controller: _lastNameController,
+                        labelText: 'Last Name',
+                        prefixIcon: Icons.person_outline,
+                        keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
+                        validator: (value) => _validateName(value, 'last name'),
+                      ),
+                      const SizedBox(height: 16),
                       AppTextField(
                         controller: _emailController,
                         labelText: 'Email',
